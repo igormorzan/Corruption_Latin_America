@@ -6,9 +6,37 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
+library(jsonlite)
+library(tidyverse)
+library(ggplot2)
 
+json_file <- 'https://datahub.io/core/corruption-perceptions-index/datapackage.json'
+json_data <- fromJSON(paste(readLines(json_file), collapse=""))
+
+# get list of all resources:
+print(json_data$resources$name)
+
+# print all tabular data(if exists any)
+for(i in 1:length(json_data$resources$datahub$type)){
+  if(json_data$resources$datahub$type[i]=='derived/csv'){
+    path_to_file = json_data$resources$path[i]
+    corruption_data <- read.csv(url(path_to_file))
+    print(corruption_data)
+  }
+}
 
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-
+```{r, echo=FALSE}
+corruption_data %>%
+  filter(Jurisdiction %in% c("Argentina", "Bolivia", "Brazil", "Chile", "Colombia",
+                             "Ecuador", "Paraguay", "Peru", "Uruguay", "Venezuela")) %>%
+  ggplot(aes(x = Jurisdiction, y = X2015)) +
+  geom_point() +
+  labs(title = "Latin American Countries' Corruption Perceptions Index for 2015", 
+       subtitle = "Measures the degree that corruption is percieved, with higher values representing less corruption",
+       caption = "Source: Transparency International") +
+  xlab(NULL) +
+  ylab("Corruption Perceptions Index")
+```
