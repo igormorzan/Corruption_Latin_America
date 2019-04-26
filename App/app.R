@@ -37,12 +37,14 @@ for(i in 1:length(json_data$resources$datahub$type)){
 
 corruption_data <- new_data %>%
   # filters for Latin American countries
-  
   filter(Jurisdiction %in% c("Argentina", "Bolivia", "Brazil", "Chile", "Colombia",
                              "Ecuador", "Paraguay", "Peru", "Uruguay", "Venezuela"))
 
-corruption_data_2015 <- corruption_data %>%
+cpi_2015 <- corruption_data %>%
   select(Jurisdiction, X2015)
+
+cpi_2014 <- corruption_data %>%
+  select(Jurisdiction, X2014)
 
 # Define UI for application that draws a histogram
 
@@ -53,7 +55,7 @@ ui <- fluidPage(theme = shinytheme("flatly"),
                       tags$p("The map below places markers on each country in Latin America, and these markers indicate their rank relative to other countries in the index.
                              A country's score indicates the perceived level of public sector corruption on a scale of 0 (very corrupt) to 100 (very clean)."),
                       leafletOutput("latin_america", height = "600"),
-                      tags$h3("Defining Corruption and it's Role"),
+                      tags$h3("Defining Corruption and its Role"),
                       tags$p("Corruption is defined as the use of public goods for private benefit. In order to study corruption, it is important to identify the different types 
                              of corruption: clientelism, extortion, capture, bribery, etc. Different types of corruption are used in different situations, however the datasets used 
                              for this project look at perceived corruption among citizens, and this data is gathered through a survey. Corruption plagues much of Latin America, especially 
@@ -67,7 +69,8 @@ ui <- fluidPage(theme = shinytheme("flatly"),
                           )
                         ),
                       mainPanel(
-                        plotOutput("plot")
+                        plotOutput("cpi_2015"),
+                        plotOutput("cpi_2014")
                         )
              )),
              tabPanel("Table",
@@ -83,7 +86,6 @@ ui <- fluidPage(theme = shinytheme("flatly"),
                     tags$h3("Project Details"),
                     tags$p("Growing up in Peru, the concept of corruption wasn't an unfamiliar aspect of my life. Bribes were especially prominent among police officers in my small town, and the lack of data
                            and attention to this problem inspired me to pursue this project. The datasets, although small, provide interesting insights to the levels of corruption in countries across Latin America."))
-
   )
 )
 
@@ -92,14 +94,19 @@ ui <- fluidPage(theme = shinytheme("flatly"),
 
 server <- function(input, output) 
 {
-  output$plot <- renderPlot({
-    corruption_data_2015 %>%
-      ggplot(aes(x = Jurisdiction, y = X2015)) +
+  output$cpi_2015 <- renderPlot({
+  cpi_2015 %>%
+  ggplot(aes(x = Jurisdiction, y = X2015), type=input$plotType) +
+      geom_point() +
       labs(title = "Latin American Countries' Corruption Perceptions Index for 2015", 
            subtitle = "Measures the degree that corruption is percieved, with higher values representing less corruption",
            caption = "Source: Transparency International") +
       xlab(NULL) +
       ylab("Corruption Perceptions Index")
+  })
+  
+  output$cpi_2014 <- renderPlot({
+  plot(cpi_2014, type=input$plotType)
   })
   
   output$table <- DT::renderDataTable({
