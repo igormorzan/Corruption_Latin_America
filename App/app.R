@@ -40,22 +40,25 @@ corruption_data <- new_data %>%
   filter(Jurisdiction %in% c("Argentina", "Bolivia", "Brazil", "Chile", "Colombia",
                              "Ecuador", "Paraguay", "Peru", "Uruguay", "Venezuela"))
 
-cpi_2000 <- read_rds("~/Desktop/Corruption_Latin_America/App/cpi_2000.rds")
-cpi_2001 <- read_rds("~/Desktop/Corruption_Latin_America/App/cpi_2001.rds")
-cpi_2002 <- read_rds("~/Desktop/Corruption_Latin_America/App/cpi_2002.rds")
-cpi_2003 <- read_rds("~/Desktop/Corruption_Latin_America/App/cpi_2003.rds")
-cpi_2004 <- read_rds("~/Desktop/Corruption_Latin_America/App/cpi_2004.rds")
-cpi_2005 <- read_rds("~/Desktop/Corruption_Latin_America/App/cpi_2005.rds")
-cpi_2006 <- read_rds("~/Desktop/Corruption_Latin_America/App/cpi_2006.rds")
-cpi_2007 <- read_rds("~/Desktop/Corruption_Latin_America/App/cpi_2007.rds")
-cpi_2008 <- read_rds("~/Desktop/Corruption_Latin_America/App/cpi_2008.rds")
-cpi_2009 <- read_rds("~/Desktop/Corruption_Latin_America/App/cpi_2009.rds")
-cpi_2010 <- read_rds("~/Desktop/Corruption_Latin_America/App/cpi_2010.rds")
-cpi_2011 <- read_rds("~/Desktop/Corruption_Latin_America/App/cpi_2011.rds")
-cpi_2012<- read_rds("~/Desktop/Corruption_Latin_America/App/cpi_2012.rds")
-cpi_2013 <- read_rds("~/Desktop/Corruption_Latin_America/App/cpi_2013.rds")
-cpi_2014 <- read_rds("~/Desktop/Corruption_Latin_America/App/cpi_2014.rds")
-cpi_2015 <- read_rds("~/Desktop/Corruption_Latin_America/App/cpi_2015.rds")
+cpi_2000 <- read_rds("./cpi_2000.rds")
+cpi_2001 <- read_rds("./cpi_2001.rds")
+cpi_2002 <- read_rds("./cpi_2002.rds")
+cpi_2003 <- read_rds("./cpi_2003.rds")
+cpi_2004 <- read_rds("./cpi_2004.rds")
+cpi_2005 <- read_rds("./cpi_2005.rds")
+cpi_2006 <- read_rds("./cpi_2006.rds")
+cpi_2007 <- read_rds("./cpi_2007.rds")
+cpi_2008 <- read_rds("./cpi_2008.rds")
+cpi_2009 <- read_rds("./cpi_2009.rds")
+cpi_2010 <- read_rds("./cpi_2010.rds")
+cpi_2011 <- read_rds("./cpi_2011.rds")
+cpi_2012<- read_rds("./cpi_2012.rds")
+cpi_2013 <- read_rds("./cpi_2013.rds")
+cpi_2014 <- read_rds("./cpi_2014.rds")
+cpi_2015 <- read_rds("./cpi_2015.rds")
+
+bar_institution <- read_rds("~/Desktop/Corruption_Latin_America/App/bar_institution.rds")
+point_institution <- read_rds("~/Desktop/Corruption_Latin_America/App/point_institution.rds")
 
 # Define UI for application that draws a histogram
 
@@ -72,7 +75,7 @@ ui <- fluidPage(theme = shinytheme("flatly"),
                              for this project look at perceived corruption among citizens, and this data is gathered through a survey. Corruption plagues much of Latin America, especially 
                              where politicians abuse their resources to retain power. Above all, corruption is difficult to quantify, and measuring corruption is not easy since it occurs in secret: 
                              costs are difficult to measure but they are definitely noticeable.")),
-             tabPanel("CPI Graph",
+             tabPanel("CPI Graphs",
                       sidebarLayout
                       (
                         sidebarPanel
@@ -85,11 +88,17 @@ ui <- fluidPage(theme = shinytheme("flatly"),
                                       multiple = FALSE,
                                       selected = "2000")
                       ),
+                        sidebarPanel(
+                          radioButtons("plotType", "Select a plot type",
+                                       c("Bar"="b", "Point"="p")
+                          )
+                        )),
                       mainPanel
                       (
-                        plotOutput("cpi_graph")
+                        plotOutput("cpi_graph"),
+                        plotOutput("institution_corruption")
                       )
-                    )),
+                    ),
              tabPanel("Table",
                       DT::dataTableOutput("table")
                      ),
@@ -160,6 +169,15 @@ server <- function(input, output)
     }
     else if(input$year == "2015") {
       cpi_2015
+    }
+  })
+  
+  output$institution_corruption <- renderPlot({
+    if(input$plotType == "b") {
+      bar_institution
+    }
+    else if(input$plotType == "p") {
+      point_institution
     }
   })
   
