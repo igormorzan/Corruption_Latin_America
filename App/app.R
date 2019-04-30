@@ -86,19 +86,17 @@ ui <- fluidPage(theme = shinytheme("flatly"),
                                                   "2006", "2007", "2008", "2009", "2010", "2011",
                                                   "2012", "2013", "2014", "2015"),
                                       multiple = FALSE,
-                                      selected = "2000")
-                      ),
-                        sidebarPanel(
+                                      selected = "2000"),
                           radioButtons("plotType", "Select a plot type",
                                        c("Bar"="b", "Point"="p")
                           )
-                        )),
+                        ),
                       mainPanel
                       (
                         plotOutput("cpi_graph"),
                         plotOutput("institution_corruption")
                       )
-                    ),
+                    )),
              tabPanel("Table",
                       DT::dataTableOutput("table")
                      ),
