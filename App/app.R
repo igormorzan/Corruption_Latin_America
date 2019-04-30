@@ -1,5 +1,3 @@
-## GOV 1005 Spring Final Project
-
 # Loads necessary libraries for creating shiny app
 
 library(shiny)
@@ -116,12 +114,17 @@ ui <- fluidPage(theme = shinytheme("flatly"),
                       mainPanel
                       (
                         plotOutput("cpi_graph"),
+                        h1(" "),
                         plotOutput("institution_corruption")
                       )
                     )),
+             # creates the table and outputs the table of the CPI dataset
+             
              tabPanel("Table",
                       DT::dataTableOutput("table")
                      ),
+             # general About tab containing information about data sources and my Github repository link
+             
              tabPanel("About",
                     tags$h3("Data Sources"),             
                     tags$p("The data has been drawn from a collection of sources: Transparency International and the Latinobarometro Database. Through the ",
@@ -138,12 +141,12 @@ ui <- fluidPage(theme = shinytheme("flatly"),
   )
 )
 
-
-
-# Define server logic required to draw the graphs
+# Defines server logic required to draw the graphs
 
 server <- function(input, output) 
 {
+  # renders the plot required to output the CPI graph and allows for user input based on year
+  
   output$cpi_graph <- renderPlot({
     if(input$year == "2000") {
       cpi_2000
@@ -195,6 +198,9 @@ server <- function(input, output)
     }
   })
   
+  # renders the plot required to output the institutional corruption graph and allows for the user to
+  # manipulate the type of graph 
+  
   output$institution_corruption <- renderPlot({
     if(input$plotType == "b") {
       bar_institution
@@ -204,11 +210,19 @@ server <- function(input, output)
     }
   })
   
+  # outputs the table of the CPI values across Latin American countries
+  
   output$table <- DT::renderDataTable({
     DT::datatable(corruption_data)
   })
   
+  # using leaflet, the Latin American map is created and markers are added to each country with corruption data
+  # relevant to each country
+  
   output$latin_america <- renderLeaflet({
+    
+    # the popup tab for each country is initialized here
+    # appropriate hyperlinks are assigned 
     
     argentina_popup <- paste(sep = "<br/>",
                              "<b><a href='https://www.transparency.org/country/ARG'>Argentina</a></b>",
@@ -270,14 +284,17 @@ server <- function(input, output)
                            "Rank: 168/180"
     )
     
+    # leaflet creates the map
     leaflet() %>%
+      
+      # adding tiles creates a better visualization of the map
       addTiles() %>%
       
-      # Setting an appropriate zoom on the graphs
+      # setting an appropriate zoom on the graphs
       
       setView(lng = -63.549, lat = -16.28, zoom = 3.5) %>%
       
-      # Adding a marker to the capital of the Latin American country
+      # adds a marker to the capital of the Latin American country
       
       addCircleMarkers(lng = -58.381592, lat = -34.603722, popup = argentina_popup) %>%
       addCircleMarkers(lng = -63.5887, lat = -16.2902, popup = bolivia_popup) %>%
