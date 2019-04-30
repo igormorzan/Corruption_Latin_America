@@ -42,6 +42,20 @@ corruption_data <- new_data %>%
 
 cpi_2000 <- read_rds("~/Desktop/Corruption_Latin_America/App/cpi_2000.rds")
 cpi_2001 <- read_rds("~/Desktop/Corruption_Latin_America/App/cpi_2001.rds")
+cpi_2002 <- read_rds("~/Desktop/Corruption_Latin_America/App/cpi_2002.rds")
+cpi_2003 <- read_rds("~/Desktop/Corruption_Latin_America/App/cpi_2003.rds")
+cpi_2004 <- read_rds("~/Desktop/Corruption_Latin_America/App/cpi_2004.rds")
+cpi_2005 <- read_rds("~/Desktop/Corruption_Latin_America/App/cpi_2005.rds")
+cpi_2006 <- read_rds("~/Desktop/Corruption_Latin_America/App/cpi_2006.rds")
+cpi_2007 <- read_rds("~/Desktop/Corruption_Latin_America/App/cpi_2007.rds")
+cpi_2008 <- read_rds("~/Desktop/Corruption_Latin_America/App/cpi_2008.rds")
+cpi_2009 <- read_rds("~/Desktop/Corruption_Latin_America/App/cpi_2009.rds")
+cpi_2010 <- read_rds("~/Desktop/Corruption_Latin_America/App/cpi_2010.rds")
+cpi_2011 <- read_rds("~/Desktop/Corruption_Latin_America/App/cpi_2011.rds")
+cpi_2012<- read_rds("~/Desktop/Corruption_Latin_America/App/cpi_2012.rds")
+cpi_2013 <- read_rds("~/Desktop/Corruption_Latin_America/App/cpi_2013.rds")
+cpi_2014 <- read_rds("~/Desktop/Corruption_Latin_America/App/cpi_2014.rds")
+cpi_2015 <- read_rds("~/Desktop/Corruption_Latin_America/App/cpi_2015.rds")
 
 # Define UI for application that draws a histogram
 
@@ -65,7 +79,9 @@ ui <- fluidPage(theme = shinytheme("flatly"),
                         (
                           selectInput(inputId = "year",
                                       label = "Select a year",
-                                      choices = c("2000", "2001"),
+                                      choices = c("2000", "2001", "2002", "2003", "2004", "2005",
+                                                  "2006", "2007", "2008", "2009", "2010", "2011",
+                                                  "2012", "2013", "2014", "2015"),
                                       multiple = FALSE,
                                       selected = "2000")
                       ),
@@ -102,6 +118,48 @@ server <- function(input, output)
     }
     else if(input$year == "2001") {
       cpi_2001
+    }
+    else if(input$year == "2002") {
+      cpi_2002
+    }
+    else if(input$year == "2003") {
+      cpi_2003
+    }
+    else if(input$year == "2004") {
+      cpi_2004
+    }
+    else if(input$year == "2005") {
+      cpi_2005
+    }
+    else if(input$year == "2006") {
+      cpi_2006
+    }
+    else if(input$year == "2007") {
+      cpi_2007
+    }
+    else if(input$year == "2008") {
+      cpi_2008
+    }
+    else if(input$year == "2009") {
+      cpi_2009
+    }
+    else if(input$year == "2010") {
+      cpi_2010
+    }
+    else if(input$year == "2011") {
+      cpi_2011
+    }
+    else if(input$year == "2012") {
+      cpi_2012
+    }
+    else if(input$year == "2013") {
+      cpi_2013
+    }
+    else if(input$year == "2014") {
+      cpi_2014
+    }
+    else if(input$year == "2015") {
+      cpi_2015
     }
   })
   
