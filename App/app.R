@@ -40,11 +40,8 @@ corruption_data <- new_data %>%
   filter(Jurisdiction %in% c("Argentina", "Bolivia", "Brazil", "Chile", "Colombia",
                              "Ecuador", "Paraguay", "Peru", "Uruguay", "Venezuela"))
 
-cpi_2015 <- corruption_data %>%
-  select(Jurisdiction, X2015)
-
-cpi_2014 <- corruption_data %>%
-  select(Jurisdiction, X2014)
+cpi_2000 <- read_rds("~/Desktop/Corruption_Latin_America/App/cpi_2000.rds")
+cpi_2001 <- read_rds("~/Desktop/Corruption_Latin_America/App/cpi_2001.rds")
 
 # Define UI for application that draws a histogram
 
@@ -62,20 +59,24 @@ ui <- fluidPage(theme = shinytheme("flatly"),
                              where politicians abuse their resources to retain power. Above all, corruption is difficult to quantify, and measuring corruption is not easy since it occurs in secret: 
                              costs are difficult to measure but they are definitely noticeable.")),
              tabPanel("CPI Graph",
-                      sidebarLayout(
-                        sidebarPanel(
-                          radioButtons("plotType", "Plot type",
-                                       c("Scatter"="p", "Line"="l", "Bar" = "b")
-                          )
-                        ),
-                      mainPanel(
-                        plotOutput("cpi_2015"),
-                        plotOutput("cpi_2014")
-                        )
-             )),
+                      sidebarLayout
+                      (
+                        sidebarPanel
+                        (
+                          selectInput(inputId = "year",
+                                      label = "Select a year",
+                                      choices = c("2000", "2001"),
+                                      multiple = FALSE,
+                                      selected = "2000")
+                      ),
+                      mainPanel
+                      (
+                        plotOutput("cpi_graph")
+                      )
+                    )),
              tabPanel("Table",
                       DT::dataTableOutput("table")
-                        ),
+                     ),
              tabPanel("About",
                     tags$h3("Data Sources"),             
                     tags$p("The data has been drawn from a collection of sources: Transparency International and the Latinobarometro Database. Through the ",
@@ -90,23 +91,18 @@ ui <- fluidPage(theme = shinytheme("flatly"),
 )
 
 
+
 # Define server logic required to draw the graphs
 
 server <- function(input, output) 
 {
-  output$cpi_2015 <- renderPlot({
-  cpi_2015 %>%
-  ggplot(aes(x = Jurisdiction, y = X2015), type=input$plotType) +
-      geom_point() +
-      labs(title = "Latin American Countries' Corruption Perceptions Index for 2015", 
-           subtitle = "Measures the degree that corruption is percieved, with higher values representing less corruption",
-           caption = "Source: Transparency International") +
-      xlab(NULL) +
-      ylab("Corruption Perceptions Index")
-  })
-  
-  output$cpi_2014 <- renderPlot({
-  plot(cpi_2014, type=input$plotType)
+  output$cpi_graph <- renderPlot({
+    if(input$year == "2000") {
+      cpi_2000
+    }
+    else if(input$year == "2001") {
+      cpi_2001
+    }
   })
   
   output$table <- DT::renderDataTable({
