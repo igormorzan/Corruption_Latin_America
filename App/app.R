@@ -40,6 +40,7 @@ corruption_data <- new_data %>%
   filter(Jurisdiction %in% c("Argentina", "Bolivia", "Brazil", "Chile", "Colombia",
                              "Ecuador", "Paraguay", "Peru", "Uruguay", "Venezuela"))
 
+# assigns the rds files to each respective variable that is later called in the server side
 cpi_2000 <- read_rds("./cpi_2000.rds")
 cpi_2001 <- read_rds("./cpi_2001.rds")
 cpi_2002 <- read_rds("./cpi_2002.rds")
@@ -57,40 +58,61 @@ cpi_2013 <- read_rds("./cpi_2013.rds")
 cpi_2014 <- read_rds("./cpi_2014.rds")
 cpi_2015 <- read_rds("./cpi_2015.rds")
 
-bar_institution <- read_rds("~/Desktop/Corruption_Latin_America/App/bar_institution.rds")
-point_institution <- read_rds("~/Desktop/Corruption_Latin_America/App/point_institution.rds")
+bar_institution <- read_rds("./bar_institution.rds")
+point_institution <- read_rds("./point_institution.rds")
 
-# Define UI for application that draws a histogram
+# Define UI for application that plots corruption across Latin America
 
 ui <- fluidPage(theme = shinytheme("flatly"),
   navbarPage("Corruption in Latin America",
+             # The first tab provides a map of Latin America with each countries' ranking across the entire world as well as their 
+             # Corruption Perception Index values
+             
              tabPanel("Overview",
                       tags$h3("A Visualization of Corruption in Latin America"),
                       tags$p("The map below places markers on each country in Latin America, and these markers indicate their rank relative to other countries in the index.
                              A country's score indicates the perceived level of public sector corruption on a scale of 0 (very corrupt) to 100 (very clean)."),
+                      # Leaflet allows me to create the map of Latin America
+                      
                       leafletOutput("latin_america", height = "600"),
+                      # Provides relevant information regarding corruption for the user so that navigating the Shiny app is more seamless
+                      # and easier to understand the data
+                      
                       tags$h3("Defining Corruption and its Role"),
                       tags$p("Corruption is defined as the use of public goods for private benefit. In order to study corruption, it is important to identify the different types 
                              of corruption: clientelism, extortion, capture, bribery, etc. Different types of corruption are used in different situations, however the datasets used 
                              for this project look at perceived corruption among citizens, and this data is gathered through a survey. Corruption plagues much of Latin America, especially 
                              where politicians abuse their resources to retain power. Above all, corruption is difficult to quantify, and measuring corruption is not easy since it occurs in secret: 
                              costs are difficult to measure but they are definitely noticeable.")),
+             # creates the tab panel for the CPI graphs for each year 
+             
              tabPanel("CPI Graphs",
                       sidebarLayout
                       (
                         sidebarPanel
                         (
+                          # creates the choices for years to graph CPI values across Latin America
+                          
                           selectInput(inputId = "year",
                                       label = "Select a year",
                                       choices = c("2000", "2001", "2002", "2003", "2004", "2005",
                                                   "2006", "2007", "2008", "2009", "2010", "2011",
                                                   "2012", "2013", "2014", "2015"),
+                                      # this allows the user to only select one option for yearly values
+                                      
                                       multiple = FALSE,
-                                      selected = "2000"),
+                                      # sets the default year to 2015
+                                      
+                                      selected = "2015"),
+                          # adds another option to the sidebar panel for user to manipulate the type of graph
+                          # options include bar plot or scatter plot
+                          
                           radioButtons("plotType", "Select a plot type",
                                        c("Bar"="b", "Point"="p")
                           )
                         ),
+                      # main panel displays the graphs that were created from the RDS files
+                        
                       mainPanel
                       (
                         plotOutput("cpi_graph"),
@@ -109,7 +131,10 @@ ui <- fluidPage(theme = shinytheme("flatly"),
                                                        observes the development of democracies, economies and societies, using indicators of attitude, opinion and behavior."),
                     tags$h3("Project Details"),
                     tags$p("Growing up in Peru, the concept of corruption wasn't an unfamiliar aspect of my life. Bribes were especially prominent among police officers in my small town, and the lack of data
-                           and attention to this problem inspired me to pursue this project. The datasets, although small, provide interesting insights to the levels of corruption in countries across Latin America."))
+                           and attention to this problem inspired me to pursue this project. The datasets, although small, provide interesting insights to the levels of corruption in countries across Latin America."),
+                    tags$h3("About Me"),
+                    tags$p("My name is Igor Morzan, and I am currently studying government at Harvard. You can find my Github respository for this project ", tags$a("here.", href = "https://github.com/imorzan/Corruption_Latin_America"),
+                           "For any questions regarding this project or the datasets, feel free to reach me at imorzan@college.harvard.edu."))
   )
 )
 
@@ -267,6 +292,6 @@ server <- function(input, output)
   })
 }
 
-# Run the application 
+# Runs the application 
 
 shinyApp(ui = ui, server = server)

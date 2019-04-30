@@ -48,7 +48,11 @@ cpi_2000 <- corruption_data %>%
   
   ggplot(aes(x = Jurisdiction, y = as.numeric(X2000))) +
   geom_col() +
+  # sets the limits on the y axis for the bar plot
+  
   scale_y_continuous(limits = c(0, 100)) +
+  # appropriate titles and lables for the graph
+  
   labs(title = "Latin American Countries' Corruption Perceptions Index", 
        subtitle = "Measures the degree that corruption is percieved, with higher values representing less corruption",
        caption = "Source: Transparency International") +
@@ -56,5 +60,6 @@ cpi_2000 <- corruption_data %>%
   ylab("Corruption Perceptions Index") +
   theme_economist()
 
+# creates the rds file for each individual graph that is called in the shiny app
 write_rds(cpi_2000, "~/Desktop/Corruption_Latin_America/App/cpi_2000.rds")
 ```
