@@ -8,6 +8,8 @@ library(markdown)
 library(DT)
 library(leaflet)
 library(shinythemes)
+library(plyr)
+library(dplyr)
 
 # downloads in the json file containing the data from the website
 
@@ -36,7 +38,13 @@ for(i in 1:length(json_data$resources$datahub$type)){
 corruption_data <- new_data %>%
   # filters for Latin American countries
   filter(Jurisdiction %in% c("Argentina", "Bolivia", "Brazil", "Chile", "Colombia",
-                             "Ecuador", "Paraguay", "Peru", "Uruguay", "Venezuela"))
+                             "Ecuador", "Paraguay", "Peru", "Uruguay", "Venezuela")) %>%
+  # renames the previous columns by removing the 'X' from their respective names
+  
+  rename(c("X1998" = "1998", "X1999" = "1999", "X2000" = "2000", "X2001" = "2001", "X2002" = "2002",
+           "X2003" = "2003", "X2004" = "2004", "X2005" = "2005", "X2006" = "2006", "X2007" = "2007",
+           "X2008" = "2008", "X2009" = "2009", "X2010" = "2010", "X2011" = "2011", "X2012" = "2012",
+           "X2013" = "2013", "X2014" = "2014", "X2015" = "2015"))
 
 # assigns the rds files to each respective variable that is later called in the server side
 cpi_2000 <- read_rds("./cpi_2000.rds")
