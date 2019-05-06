@@ -73,7 +73,6 @@ ui <- fluidPage(theme = shinytheme("flatly"),
   navbarPage("Corruption in Latin America",
              # The first tab provides a map of Latin America with each countries' ranking across the entire world as well as their 
              # Corruption Perception Index values
-             
              tabPanel("Overview",
                       tags$h3("A Visualization of Corruption in Latin America"),
                       tags$p("The map below places markers on each country in Latin America, and these markers indicate their rank relative to other countries in the index.
@@ -93,6 +92,14 @@ ui <- fluidPage(theme = shinytheme("flatly"),
              # creates the tab panel for the CPI graphs for each year 
              
              tabPanel("CPI Graphs",
+                      tags$h3("Navigating the Data"), 
+                      tags$p("Here, corruption is measured through survey responses from citizens living in their respective countries. These responses account for the several different types of corruption
+                              perceived among the citizens, including briberies and clientelistic exchanges. Behind these numbers is the daily reality for people living in these countries. According to Transparency International,
+                              the data source, the index cannot capture the individual frustration of this reality, but it does capture the informed views of analysts, businesspeople and experts in countries 
+                              around the world."),
+                      tags$h3("Tools"),
+                      tags$p("1. Select a year to display the Corruption Perceptions Index for each country"),
+                      tags$p("2. Manipulate the type of plot for a comparative look at the data"),
                       sidebarLayout
                       (
                         sidebarPanel
@@ -122,13 +129,16 @@ ui <- fluidPage(theme = shinytheme("flatly"),
                       mainPanel
                       (
                         plotOutput("cpi_graph"),
-                        h1(" "),
+                        tags$h1(" "),
                         plotOutput("institution_corruption")
                       )
                     )),
              # creates the table and outputs the table of the CPI dataset
              
-             tabPanel("Table",
+             tabPanel("Tables",
+                      tags$h3("Corruption Perceptions Index Table"),
+                      tags$p("This table outputs all the Corruption Perception Indexes of each Latin American country, ranging as far back as 1998. The dataset collects CPI values until 2015, and '-' is used to indicate missing 
+                             values in the dataset. For reference, lower values indicate higher levels of perceived corruption while higher values indicate lower levels of perceived corruption among respondents."),
                       DT::dataTableOutput("table")
                      ),
              # general About tab containing information about data sources and my Github repository link
