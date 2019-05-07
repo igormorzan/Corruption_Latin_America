@@ -37,6 +37,7 @@ for(i in 1:length(json_data$resources$datahub$type)){
 
 corruption_data <- new_data %>%
   # filters for Latin American countries
+  
   filter(Jurisdiction %in% c("Argentina", "Bolivia", "Brazil", "Chile", "Colombia",
                              "Ecuador", "Paraguay", "Peru", "Uruguay", "Venezuela")) %>%
   # renames the previous columns by removing the 'X' from their respective names
@@ -47,6 +48,7 @@ corruption_data <- new_data %>%
            "X2013" = "2013", "X2014" = "2014", "X2015" = "2015"))
 
 # assigns the rds files to each respective variable that is later called in the server side
+
 cpi_2000 <- read_rds("./cpi_2000.rds")
 cpi_2001 <- read_rds("./cpi_2001.rds")
 cpi_2002 <- read_rds("./cpi_2002.rds")
@@ -73,6 +75,7 @@ ui <- fluidPage(theme = shinytheme("flatly"),
   navbarPage("Corruption in Latin America",
              # The first tab provides a map of Latin America with each countries' ranking across the entire world as well as their 
              # Corruption Perception Index values
+             
              tabPanel("Overview",
                       tags$h3("Defining Corruption and its Role"),
                       tags$p("Corruption is defined as the use of public goods for private benefit. In order to study corruption, it is important to identify the different types 
