@@ -74,21 +74,26 @@ ui <- fluidPage(theme = shinytheme("flatly"),
              # The first tab provides a map of Latin America with each countries' ranking across the entire world as well as their 
              # Corruption Perception Index values
              tabPanel("Overview",
+                      tags$h3("Defining Corruption and its Role"),
+                      tags$p("Corruption is defined as the use of public goods for private benefit. In order to study corruption, it is important to identify the different types 
+                             of corruption:", tags$a("clientelism,", href = "https://www.britannica.com/topic/clientelism"), tags$a("extortion,", href = "https://www.transparency.org/glossary/term/extortion"), 
+                             tags$a("capture,", href = "https://en.wikipedia.org/wiki/State_capture"), tags$a("bribery,", href = "https://en.wikipedia.org/wiki/Bribery"), "etc. Different types of corruption are used 
+                             in different situations, however the ", tags$b("datasets used 
+                             for this project look at perceived corruption among citizens, and this data is gathered through a survey."), "Corruption plagues much of Latin America, especially 
+                             where politicians abuse their resources to retain power. Above all, corruption is difficult to quantify, and measuring corruption is not easy since it occurs in secret: 
+                             costs are difficult to measure but they are definitely noticeable."),
                       tags$h3("A Visualization of Corruption in Latin America"),
                       tags$p("The map below places markers on each country in Latin America, and these markers indicate their rank relative to other countries in the index.
-                             A country's score indicates the perceived level of public sector corruption on a scale of 0 (very corrupt) to 100 (very clean)."),
+                             A country's score indicates the perceived level of public sector corruption on a scale of", tags$b("0 (very corrupt) to 100 (very clean)"),". The country's 
+                             rank shows the position of the country relative to other countries' Corruption Perception Index. A higher rank signifies the country is on the higher end of 
+                             perceived corruption."),
                       # Leaflet allows me to create the map of Latin America
                       
                       leafletOutput("latin_america", height = "600"),
+                      tags$h1(" ")
                       # Provides relevant information regarding corruption for the user so that navigating the Shiny app is more seamless
                       # and easier to understand the data
-                      
-                      tags$h3("Defining Corruption and its Role"),
-                      tags$p("Corruption is defined as the use of public goods for private benefit. In order to study corruption, it is important to identify the different types 
-                             of corruption: clientelism, extortion, capture, bribery, etc. Different types of corruption are used in different situations, however the datasets used 
-                             for this project look at perceived corruption among citizens, and this data is gathered through a survey. Corruption plagues much of Latin America, especially 
-                             where politicians abuse their resources to retain power. Above all, corruption is difficult to quantify, and measuring corruption is not easy since it occurs in secret: 
-                             costs are difficult to measure but they are definitely noticeable.")),
+                      ),
              # creates the tab panel for the CPI graphs for each year 
              
              tabPanel("CPI Graphs",
@@ -138,7 +143,7 @@ ui <- fluidPage(theme = shinytheme("flatly"),
              tabPanel("Tables",
                       tags$h3("Corruption Perceptions Index Table"),
                       tags$p("This table outputs all the Corruption Perception Indexes of each Latin American country, ranging as far back as 1998. The dataset collects CPI values until 2015, and '-' is used to indicate missing 
-                             values in the dataset. For reference, lower values indicate higher levels of perceived corruption while higher values indicate lower levels of perceived corruption among respondents."),
+                             values in the dataset. For reference, ", tags$b("lower values indicate higher levels of perceived corruption"), "while higher values indicate lower levels of perceived corruption among respondents."),
                       DT::dataTableOutput("table")
                      ),
              # general About tab containing information about data sources and my Github repository link
