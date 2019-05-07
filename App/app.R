@@ -79,12 +79,12 @@ ui <- fluidPage(theme = shinytheme("flatly"),
                              of corruption:", tags$a("clientelism,", href = "https://www.britannica.com/topic/clientelism"), tags$a("extortion,", href = "https://www.transparency.org/glossary/term/extortion"), 
                              tags$a("capture,", href = "https://en.wikipedia.org/wiki/State_capture"), tags$a("bribery,", href = "https://en.wikipedia.org/wiki/Bribery"), "etc. Different types of corruption are used 
                              in different situations, however the ", tags$b("datasets used 
-                             for this project look at perceived corruption among citizens, and this data is gathered through a survey."), "Corruption plagues much of Latin America, especially 
+                             for this project look at individuals' perceptions of corruption in their respective countries, and this data is gathered through a survey."), "Corruption plagues much of Latin America, especially 
                              where politicians abuse their resources to retain power. Above all, corruption is difficult to quantify, and measuring corruption is not easy since it occurs in secret: 
                              costs are difficult to measure but they are definitely noticeable."),
                       tags$h3("A Visualization of Corruption in Latin America"),
                       tags$p("The map below places markers on each country in Latin America, and these markers indicate their rank relative to other countries in the index.
-                             A country's score indicates the perceived level of public sector corruption on a scale of", tags$b("0 (very corrupt) to 100 (very clean)"),". The country's 
+                             A country's score, known as the ", tags$b("Corruption Perception Index,"), "indicates the perceived level of public sector corruption on a scale of", tags$b("0 (very corrupt) to 100 (very clean)"),". The country's 
                              rank shows the position of the country relative to other countries' Corruption Perception Index. A higher rank signifies the country is on the higher end of 
                              perceived corruption."),
                       # Leaflet allows me to create the map of Latin America
@@ -135,7 +135,8 @@ ui <- fluidPage(theme = shinytheme("flatly"),
                       (
                         plotOutput("cpi_graph"),
                         tags$h1(" "),
-                        plotOutput("institution_corruption")
+                        plotOutput("institution_corruption"),
+                        tags$h1(" ")
                       )
                     )),
              # creates the table and outputs the table of the CPI dataset
